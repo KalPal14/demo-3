@@ -2,7 +2,6 @@ import "reflect-metadata";
 import { injectable, inject } from "inversify";
 import { NextFunction, Request, Response } from "express";
 
-import { LoggerService } from "../logger/logger.service.js";
 import { IExeptionFilter } from "./exeption.filter.interface.js";
 import { HTTPError } from "./http-error.class.js";
 import { TYPES } from "../types.js";

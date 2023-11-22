@@ -6,9 +6,13 @@ import { BaseController } from "../common/base.controller.js";
 import { HTTPError } from "../errors/http-error.class.js";
 import { TYPES } from "../types.js";
 import { ILogger } from "../logger/logger.interface.js";
+import { IUsersController } from "./users.controller.interfase.js";
 
 @injectable()
-export class UsersController extends BaseController {
+export class UsersController
+  extends BaseController
+  implements IUsersController
+{
   constructor(@inject(TYPES.LoggerService) private loggerServise: ILogger) {
     super(loggerServise);
     this.bindRoutes([
