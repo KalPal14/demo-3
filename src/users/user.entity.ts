@@ -1,0 +1,22 @@
+import bcrypt from 'bcryptjs';
+
+export class User {
+	private _password: string;
+
+	constructor(
+		private readonly _email: string,
+		private readonly _name: string,
+	) {}
+
+	get email(): string {
+		return this._email;
+	}
+
+	get name(): string {
+		return this._name;
+	}
+
+	async setPassword(pass: string): Promise<void> {
+		this._password = await bcrypt.hash(pass, 10);
+	}
+}
