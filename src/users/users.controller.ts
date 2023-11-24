@@ -9,11 +9,14 @@ import { ILogger } from '../logger/logger.interface.js';
 import { IUsersController } from './users.controller.interfase.js';
 import { UsersLoginDto } from './dto/users-login.dto.js';
 import { UsersRegisterDto } from './dto/users-register.dto.js';
-import { User } from './user.entity.js';
+import { IUsersService } from './users.service.interfase.js';
 
 @injectable()
 export class UsersController extends BaseController implements IUsersController {
-	constructor(@inject(TYPES.LoggerService) private loggerServise: ILogger) {
+	constructor(
+		@inject(TYPES.LoggerService) private loggerServise: ILogger,
+		@inject(TYPES.UsersService) private usersServise: IUsersService,
+	) {
 		super(loggerServise);
 		this.bindRoutes([
 			{
@@ -40,9 +43,11 @@ export class UsersController extends BaseController implements IUsersController 
 		res: Response,
 		next: NextFunction,
 	): Promise<void> {
-		const newUser = new User(body.email, body.name);
-		await newUser.setPassword(body.password);
+		const result = await this.usersServise.createUser(body);
 
-		this.ok(res, newUser);
+		if (!result) {
+			return next(new HTTPError(422, 'Такой пользователь уже существует', 'register'));
+		}
+		this.ok(res, { email: result.email });
 	}
 }

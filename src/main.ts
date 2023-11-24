@@ -5,11 +5,13 @@ import { App } from './app.js';
 import { ExeptionFilter } from './errors/exeption.filter.js';
 import { LoggerService } from './logger/logger.service.js';
 import { UsersController } from './users/users.controller.js';
+import { UsersService } from './users/users.service.js';
 
 import { ILogger } from './logger/logger.interface.js';
 import { IExeptionFilter } from './errors/exeption.filter.interface.js';
 import { TYPES } from './types.js';
 import { IUsersController } from './users/users.controller.interfase.js';
+import { IUsersService } from './users/users.service.interfase.js';
 
 interface IBootstrapReturn {
 	appContainer: Container;
@@ -21,6 +23,7 @@ const appBindings = new ContainerModule((bind: interfaces.Bind) => {
 	bind<ILogger>(TYPES.LoggerService).to(LoggerService);
 	bind<IExeptionFilter>(TYPES.ExeptionFilter).to(ExeptionFilter);
 	bind<IUsersController>(TYPES.UsersController).to(UsersController);
+	bind<IUsersService>(TYPES.UsersService).to(UsersService);
 });
 
 const bootstrap = (): IBootstrapReturn => {
