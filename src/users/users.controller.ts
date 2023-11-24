@@ -10,6 +10,7 @@ import { IUsersController } from './users.controller.interfase.js';
 import { UsersLoginDto } from './dto/users-login.dto.js';
 import { UsersRegisterDto } from './dto/users-register.dto.js';
 import { IUsersService } from './users.service.interfase.js';
+import { ValidateMiddleware } from '../common/validate.middleware.js';
 
 @injectable()
 export class UsersController extends BaseController implements IUsersController {
@@ -28,6 +29,7 @@ export class UsersController extends BaseController implements IUsersController 
 				method: 'post',
 				path: '/register',
 				func: this.register,
+				middlewares: [new ValidateMiddleware(UsersRegisterDto)],
 			},
 		]);
 	}
