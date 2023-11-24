@@ -7,6 +7,8 @@ import { HTTPError } from '../errors/http-error.class.js';
 import { TYPES } from '../types.js';
 import { ILogger } from '../logger/logger.interface.js';
 import { IUsersController } from './users.controller.interfase.js';
+import { UsersLoginDto } from './dto/users-login.dto.js';
+import { UsersRegisterDto } from './dto/users-register.dto.js';
 
 @injectable()
 export class UsersController extends BaseController implements IUsersController {
@@ -26,12 +28,14 @@ export class UsersController extends BaseController implements IUsersController 
 		]);
 	}
 
-	login(req: Request, res: Response, next: NextFunction): void {
+	login(req: Request<{}, {}, UsersLoginDto>, res: Response, next: NextFunction): void {
+		console.log(req.body);
 		next(new HTTPError(401, 'ошибка авторизации', 'login'));
 		// this.ok(res, "login");
 	}
 
-	register(req: Request, res: Response, next: NextFunction): void {
+	register(req: Request<{}, {}, UsersRegisterDto>, res: Response, next: NextFunction): void {
+		console.log(req.body);
 		this.ok(res, 'register');
 	}
 }

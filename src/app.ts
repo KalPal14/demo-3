@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import { injectable, inject } from 'inversify';
 import express, { Express } from 'express';
+import bodyParser from 'body-parser';
 
 import { IExeptionFilter } from './errors/exeption.filter.interface.js';
 import { ILogger } from './logger/logger.interface.js';
@@ -21,6 +22,10 @@ export class App {
 		this.port = 8000;
 	}
 
+	private useMiddleware(): void {
+		this.app.use(bodyParser.json());
+	}
+
 	private useRoutes(): void {
 		this.app.use('/users', this.usersController.router);
 	}
@@ -30,6 +35,7 @@ export class App {
 	}
 
 	public init(): void {
+		this.useMiddleware();
 		this.useRoutes();
 		this.useExeptionFilter();
 		this.app.listen(this.port);
