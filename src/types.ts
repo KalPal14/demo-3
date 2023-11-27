@@ -4,4 +4,5 @@ export const TYPES = {
 	LoggerService: Symbol('LoggerService'),
 	ExeptionFilter: Symbol('ExeptionFilter'),
 	UsersService: Symbol('UsersService'),
+	ConfigService: Symbol('ConfigService'),
 };
