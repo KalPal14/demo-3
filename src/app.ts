@@ -39,6 +39,6 @@ export class App {
 		this.useRoutes();
 		this.useExeptionFilter();
 		this.app.listen(this.port);
-		this.logger.log([`Сервер запущен http://localhost:${this.port}`]);
+		this.logger.log(`Сервер запущен http://localhost:${this.port}`);
 	}
 }
