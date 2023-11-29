@@ -5,4 +5,5 @@ export const TYPES = {
 	ExeptionFilter: Symbol('ExeptionFilter'),
 	UsersService: Symbol('UsersService'),
 	ConfigService: Symbol('ConfigService'),
+	PrismaService: Symbol('PrismaService'),
 };

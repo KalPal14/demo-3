@@ -7,6 +7,7 @@ import { IExeptionFilter } from './errors/exeption.filter.interface.js';
 import { ILogger } from './logger/logger.interface.js';
 import { TYPES } from './types.js';
 import { IUsersController } from './users/users.controller.interfase.js';
+import { PrismaService } from './database/prisma.service.js';
 
 @injectable()
 export class App {
@@ -17,6 +18,7 @@ export class App {
 		@inject(TYPES.LoggerService) private logger: ILogger,
 		@inject(TYPES.UsersController) private usersController: IUsersController,
 		@inject(TYPES.ExeptionFilter) private exeptionFilter: IExeptionFilter,
+		@inject(TYPES.PrismaService) private prismaService: PrismaService,
 	) {
 		this.app = express();
 		this.port = 8000;
@@ -34,10 +36,11 @@ export class App {
 		this.app.use(this.exeptionFilter.catch.bind(this.exeptionFilter));
 	}
 
-	public init(): void {
+	public async init(): Promise<void> {
 		this.useMiddleware();
 		this.useRoutes();
 		this.useExeptionFilter();
+		await this.prismaService.connect();
 		this.app.listen(this.port);
 		this.logger.log(`Сервер запущен http://localhost:${this.port}`);
 	}
