@@ -6,4 +6,5 @@ export const TYPES = {
 	UsersService: Symbol('UsersService'),
 	ConfigService: Symbol('ConfigService'),
 	PrismaService: Symbol('PrismaService'),
+	UsersRepository: Symbol('UsersRepository'),
 };

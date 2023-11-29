@@ -8,6 +8,10 @@ export class User {
 		private readonly _name: string,
 	) {}
 
+	get password(): string {
+		return this._password;
+	}
+
 	get email(): string {
 		return this._email;
 	}

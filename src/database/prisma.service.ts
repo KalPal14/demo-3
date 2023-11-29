@@ -12,6 +12,10 @@ export class PrismaService {
 		this._client = new PrismaClient();
 	}
 
+	get client(): PrismaClient {
+		return this._client;
+	}
+
 	async connect(): Promise<void> {
 		try {
 			await this._client.$connect();
