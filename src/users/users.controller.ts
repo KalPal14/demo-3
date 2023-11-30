@@ -24,6 +24,7 @@ export class UsersController extends BaseController implements IUsersController 
 				method: 'post',
 				path: '/login',
 				func: this.login,
+				middlewares: [new ValidateMiddleware(UsersLoginDto)],
 			},
 			{
 				method: 'post',
@@ -34,10 +35,17 @@ export class UsersController extends BaseController implements IUsersController 
 		]);
 	}
 
-	login(req: Request<{}, {}, UsersLoginDto>, res: Response, next: NextFunction): void {
-		console.log(req.body);
-		next(new HTTPError(401, 'ошибка авторизации', 'login'));
-		// this.ok(res, "login");
+	async login(
+		{ body }: Request<{}, {}, UsersLoginDto>,
+		res: Response,
+		next: NextFunction,
+	): Promise<void> {
+		const result = await this.usersServise.validateUser(body);
+
+		if (result instanceof HTTPError) {
+			return next(result);
+		}
+		this.ok(res, { id: result.id });
 	}
 
 	async register(
