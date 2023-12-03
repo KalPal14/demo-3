@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import { injectable, inject } from 'inversify';
 import { Request, Response, NextFunction } from 'express';
+import jsonwebtoken from 'jsonwebtoken';
 
 import { BaseController } from '../common/base.controller.js';
 import { HTTPError } from '../errors/http-error.class.js';
@@ -11,12 +12,14 @@ import { UsersLoginDto } from './dto/users-login.dto.js';
 import { UsersRegisterDto } from './dto/users-register.dto.js';
 import { IUsersService } from './users.service.interfase.js';
 import { ValidateMiddleware } from '../common/validate.middleware.js';
+import { IConfigService } from '../config/config.service.interface.js';
 
 @injectable()
 export class UsersController extends BaseController implements IUsersController {
 	constructor(
 		@inject(TYPES.LoggerService) private loggerServise: ILogger,
 		@inject(TYPES.UsersService) private usersServise: IUsersService,
+		@inject(TYPES.ConfigService) private configService: IConfigService,
 	) {
 		super(loggerServise);
 		this.bindRoutes([
@@ -45,7 +48,9 @@ export class UsersController extends BaseController implements IUsersController 
 		if (result instanceof HTTPError) {
 			return next(result);
 		}
-		this.ok(res, { id: result.id });
+
+		const jwt = await this.signJWT(body.email, this.configService.get('SECRET'));
+		this.ok(res, { id: result.id, jwt });
 	}
 
 	async register(
@@ -59,5 +64,25 @@ export class UsersController extends BaseController implements IUsersController 
 			return next(new HTTPError(422, 'Такой пользователь уже существует', 'register'));
 		}
 		this.ok(res, { email: result.email, id: result.id });
+	}
+
+	private async signJWT(email: string, secret: string): Promise<string> {
+		return new Promise<string>((resolve, reject) => {
+			jsonwebtoken.sign(
+				{
+					email,
+				},
+				secret,
+				{
+					algorithm: 'HS256',
+				},
+				(err, token) => {
+					if (err) {
+						reject(err.message);
+					}
+					resolve(token as string);
+				},
+			);
+		});
 	}
 }
