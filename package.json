@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node ./dist/main.js",
     "dev": "nodemon",
-    "dev:inspect": "nodemon -e ts,json --exec node --loader ts-node/esm --inspect=localhost:9222 src/main.ts",
+    "dev:inspect": "nodemon -e ts,json --exec node --inspect=localhost:9222 -r ts-node/register src/main.ts",
     "build": "tsc",
     "generate": "prisma generate",
     "lint": "eslint ./src/**",
