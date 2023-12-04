@@ -1,22 +1,22 @@
 import 'reflect-metadata';
 import { Container, ContainerModule, interfaces } from 'inversify';
 
-import { App } from './app.js';
-import { ExeptionFilter } from './errors/exeption.filter.js';
-import { LoggerService } from './logger/logger.service.js';
-import { UsersController } from './users/users.controller.js';
-import { UsersService } from './users/users.service.js';
-import { ConfigService } from './config/config.service.js';
-import { PrismaService } from './database/prisma.service.js';
-import { UsersRepository } from './users/users.repository.js';
+import { App } from './app';
+import { ExeptionFilter } from './errors/exeption.filter';
+import { LoggerService } from './logger/logger.service';
+import { UsersController } from './users/users.controller';
+import { UsersService } from './users/users.service';
+import { ConfigService } from './config/config.service';
+import { PrismaService } from './database/prisma.service';
+import { UsersRepository } from './users/users.repository';
 
-import { TYPES } from './types.js';
-import { ILogger } from './logger/logger.interface.js';
-import { IExeptionFilter } from './errors/exeption.filter.interface.js';
-import { IUsersController } from './users/users.controller.interfase.js';
-import { IUsersService } from './users/users.service.interfase.js';
-import { IConfigService } from './config/config.service.interface.js';
-import { IUsersRepository } from './users/users.repository.interface.js';
+import { TYPES } from './types';
+import { ILogger } from './logger/logger.interface';
+import { IExeptionFilter } from './errors/exeption.filter.interface';
+import { IUsersController } from './users/users.controller.interfase';
+import { IUsersService } from './users/users.service.interfase';
+import { IConfigService } from './config/config.service.interface';
+import { IUsersRepository } from './users/users.repository.interface';
 
 interface IBootstrapReturn {
 	appContainer: Container;

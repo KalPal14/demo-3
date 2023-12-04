@@ -2,8 +2,8 @@ import 'reflect-metadata';
 import { injectable } from 'inversify';
 import { Response, Router } from 'express';
 
-import { IRouterController } from './route.interface.js';
-import { ILogger } from '../logger/logger.interface.js';
+import { IRouterController } from './route.interface';
+import { ILogger } from '../logger/logger.interface';
 
 @injectable()
 export abstract class BaseController {
@@ -19,7 +19,7 @@ export abstract class BaseController {
 
 	public send<T>(res: Response, code: number, message: T): Response {
 		res.type('application/json');
-		return res.status(code).json(message);
+		return res.status(code).send(message);
 	}
 
 	public ok<T>(res: Response, message: T): Response {

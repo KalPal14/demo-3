@@ -3,11 +3,11 @@ import { injectable, inject } from 'inversify';
 import express, { Express } from 'express';
 import bodyParser from 'body-parser';
 
-import { IExeptionFilter } from './errors/exeption.filter.interface.js';
-import { ILogger } from './logger/logger.interface.js';
-import { TYPES } from './types.js';
-import { IUsersController } from './users/users.controller.interfase.js';
-import { PrismaService } from './database/prisma.service.js';
+import { IExeptionFilter } from './errors/exeption.filter.interface';
+import { ILogger } from './logger/logger.interface';
+import { TYPES } from './types';
+import { IUsersController } from './users/users.controller.interfase';
+import { PrismaService } from './database/prisma.service';
 
 @injectable()
 export class App {

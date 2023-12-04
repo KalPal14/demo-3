@@ -3,16 +3,16 @@ import { injectable, inject } from 'inversify';
 import { Request, Response, NextFunction } from 'express';
 import jsonwebtoken from 'jsonwebtoken';
 
-import { BaseController } from '../common/base.controller.js';
-import { HTTPError } from '../errors/http-error.class.js';
-import { TYPES } from '../types.js';
-import { ILogger } from '../logger/logger.interface.js';
-import { IUsersController } from './users.controller.interfase.js';
-import { UsersLoginDto } from './dto/users-login.dto.js';
-import { UsersRegisterDto } from './dto/users-register.dto.js';
-import { IUsersService } from './users.service.interfase.js';
-import { ValidateMiddleware } from '../common/validate.middleware.js';
-import { IConfigService } from '../config/config.service.interface.js';
+import { BaseController } from '../common/base.controller';
+import { HTTPError } from '../errors/http-error.class';
+import { TYPES } from '../types';
+import { ILogger } from '../logger/logger.interface';
+import { IUsersController } from './users.controller.interfase';
+import { UsersLoginDto } from './dto/users-login.dto';
+import { UsersRegisterDto } from './dto/users-register.dto';
+import { IUsersService } from './users.service.interfase';
+import { ValidateMiddleware } from '../common/validate.middleware';
+import { IConfigService } from '../config/config.service.interface';
 
 @injectable()
 export class UsersController extends BaseController implements IUsersController {
