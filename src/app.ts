@@ -8,6 +8,8 @@ import { ILogger } from './logger/logger.interface';
 import { TYPES } from './types';
 import { IUsersController } from './users/users.controller.interfase';
 import { PrismaService } from './database/prisma.service';
+import { JwtAuthMiddlewere } from './common/jwtAuth.middlewere';
+import { IConfigService } from './config/config.service.interface';
 
 @injectable()
 export class App {
@@ -19,6 +21,7 @@ export class App {
 		@inject(TYPES.UsersController) private usersController: IUsersController,
 		@inject(TYPES.ExeptionFilter) private exeptionFilter: IExeptionFilter,
 		@inject(TYPES.PrismaService) private prismaService: PrismaService,
+		@inject(TYPES.ConfigService) private configService: IConfigService,
 	) {
 		this.app = express();
 		this.port = 8000;
@@ -26,6 +29,8 @@ export class App {
 
 	private useMiddleware(): void {
 		this.app.use(bodyParser.json());
+		const jwtAuthMiddlewere = new JwtAuthMiddlewere(this.configService.get('SECRET'));
+		this.app.use(jwtAuthMiddlewere.execute.bind(jwtAuthMiddlewere));
 	}
 
 	private useRoutes(): void {
