@@ -43,4 +43,8 @@ export class UsersService implements IUsersService {
 		}
 		return new HTTPError(401, 'не верный пароль', 'UsersService');
 	}
+
+	public async getUserInfo(email: string): Promise<UserModel | null> {
+		return this.usersRepository.find(email);
+	}
 }
