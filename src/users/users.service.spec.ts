@@ -8,6 +8,7 @@ import { IUsersService } from './users.service.interfase';
 import { TYPES } from '../types';
 import { UserModel } from '@prisma/client';
 import { User } from './user.entity';
+import { HTTPError } from '../errors/http-error.class';
 
 const configServiceMock: IConfigService = {
 	get: jest.fn(),
@@ -57,5 +58,63 @@ describe('Users Service', () => {
 		expect(createdUser?.password).toBeDefined();
 		expect(createdUser?.password).not.toEqual('1');
 		expect(createdUser?.id).toEqual(1);
+	});
+
+	it('[validateUser] non-existent email', async () => {
+		usersRepository.find = jest.fn().mockReturnValueOnce(null);
+
+		const validationResult = await usersService.validateUser({
+			email: 'a@gmail.com',
+			password: '123123',
+		});
+
+		expect(validationResult).toBeInstanceOf(HTTPError);
+		if (validationResult instanceof HTTPError) {
+			expect(validationResult.statusCode).toEqual(404);
+		}
+	});
+
+	it('[validateUser] wrong password', async () => {
+		const passwordHash = '$2a$10$HJ0NesN36jFdmzqh/3wMQOW8n0Q835OgOsx9Rwtq5DnCUL0LhlVSy';
+		usersRepository.find = jest.fn().mockReturnValueOnce({
+			id: 1,
+			email: 'a@gmail.com',
+			name: 'Oleg',
+			password: passwordHash,
+		});
+
+		const validationResult = await usersService.validateUser({
+			email: 'a@gmail.com',
+			password: 'wrong password',
+		});
+
+		expect(validationResult).toBeInstanceOf(HTTPError);
+		if (validationResult instanceof HTTPError) {
+			expect(validationResult.statusCode).toEqual(401);
+		}
+	});
+
+	it('[validateUser] successful validation', async () => {
+		const passwordHash = '$2a$10$HJ0NesN36jFdmzqh/3wMQOW8n0Q835OgOsx9Rwtq5DnCUL0LhlVSy';
+		usersRepository.find = jest.fn().mockReturnValueOnce({
+			id: 1,
+			email: 'a@gmail.com',
+			name: 'Oleg',
+			password: passwordHash,
+		});
+
+		const validationResult = await usersService.validateUser({
+			email: 'a@gmail.com',
+			password: '1',
+		});
+
+		expect(validationResult).not.toBeInstanceOf(HTTPError);
+		if (validationResult instanceof HTTPError) {
+			return;
+		}
+		expect(validationResult.email).toEqual('a@gmail.com');
+		expect(validationResult.name).toEqual('Oleg');
+		expect(validationResult.password).toEqual(passwordHash);
+		expect(validationResult.id).toEqual(1);
 	});
 });
