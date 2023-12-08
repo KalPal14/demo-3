@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import { injectable, inject } from 'inversify';
 import express, { Express } from 'express';
 import bodyParser from 'body-parser';
+import { Server } from 'http';
 
 import { IExeptionFilter } from './errors/exeption.filter.interface';
 import { ILogger } from './logger/logger.interface';
@@ -15,6 +16,7 @@ import { IConfigService } from './config/config.service.interface';
 export class App {
 	public app: Express;
 	public port: number;
+	public server: Server;
 
 	constructor(
 		@inject(TYPES.LoggerService) private logger: ILogger,
@@ -46,7 +48,11 @@ export class App {
 		this.useRoutes();
 		this.useExeptionFilter();
 		await this.prismaService.connect();
-		this.app.listen(this.port);
+		this.server = this.app.listen(this.port);
 		this.logger.log(`Сервер запущен http://localhost:${this.port}`);
+	}
+
+	public close(): void {
+		this.server.close();
 	}
 }
